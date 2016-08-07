@@ -6,15 +6,13 @@ import java.util.List;
 
 public interface TestsEntityDAO {
 
-    // Найти все тесты.
-    public List<TestsEntity> findAll();
+    List<TestsEntity> findAll();
 
-    // Добавить тесты.
-    public TestsEntity add(TestsEntity testsEntity);
+    TestsEntity getTestByName(String name);
 
-    // Обновить тесты.
-    public TestsEntity update(int id, String name);
+    TestsEntity save(TestsEntity testsEntity);
 
-    // Удалить тест.
-    public void delete(TestsEntity testsEntity);
+    TestsEntity update(int id, String name);
+
+    void delete(TestsEntity testsEntity);
 }

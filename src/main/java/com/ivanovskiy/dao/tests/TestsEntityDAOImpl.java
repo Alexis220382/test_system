@@ -5,6 +5,7 @@ import com.ivanovskiy.entity.TestsEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import javax.swing.*;
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.List;
 public class TestsEntityDAOImpl implements TestsEntityDAO {
 
     public List<TestsEntity> findAll() {
-
         Session session = null;
         List<TestsEntity> testsEntities = null;
         try {
@@ -34,20 +34,39 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
         return testsEntities;
     }
 
-    public TestsEntity add(TestsEntity testsEntity) {
+    @Override
+    public TestsEntity getTestByName(String name) {
         Session session = null;
+        TestsEntity test = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
             Transaction tx = session.beginTransaction();
 
-            session.save(testsEntity);
+            Criteria criteria = session.createCriteria(TestsEntity.class);
+            criteria.add(Restrictions.eq("name", name));
+            test = (TestsEntity) criteria.uniqueResult();
+            tx.commit();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при выборке", JOptionPane.OK_OPTION);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return test;
+    }
 
+    public TestsEntity save(TestsEntity testsEntity) {
+        Session session = null;
+        try {
+            session = ManageSessionFactory.getFactory().openSession();
+            Transaction tx = session.beginTransaction();
+            session.save(testsEntity);
             tx.commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при сохранении в базу данных", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {
-
                 session.close();
             }
         }
@@ -63,7 +82,7 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
 
             testsEntities.setId(id);
             testsEntities.setName(name);
-            session.save(testsEntities);
+            session.update(testsEntities);
 
             tx.commit();
         } catch (Exception e) {
@@ -78,21 +97,21 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
     }
 
     public void delete(TestsEntity testsEntity) {
-        Session session = null;
-        try {
-            session = ManageSessionFactory.getFactory().openSession();
-            Transaction tx = session.beginTransaction();
-
-            session.delete(testsEntity);
-
-            tx.commit();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении из базы данных", JOptionPane.OK_OPTION);
-        } finally {
-            if (session != null && session.isOpen()) {
-
-                session.close();
-            }
-        }
+//        Session session = null;
+//        try {
+//            session = ManageSessionFactory.getFactory().openSession();
+//            Transaction tx = session.beginTransaction();
+//
+//            session.delete(testsEntity);
+//
+//            tx.commit();
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении из базы данных", JOptionPane.OK_OPTION);
+//        } finally {
+//            if (session != null && session.isOpen()) {
+//
+//                session.close();
+//            }
+//        }
     }
 }

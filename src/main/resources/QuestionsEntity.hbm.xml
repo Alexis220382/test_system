@@ -4,9 +4,22 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.ivanovskiy.entity.QuestionsEntity" table="questions">
-        <id name="id" column="id"/>
-        <property name="id_tests" column="id_tests"/>
-        <property name="name" column="name"/>
+    <class name="com.ivanovskiy.entity.QuestionsEntity" table="questions" schema="" catalog="test_db">
+        <id name="id">
+            <column name="id" sql-type="int" not-null="true"/>
+        </id>
+        <property name="name">
+            <column name="name" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="first">
+            <column name="first" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="second">
+            <column name="second" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="third">
+            <column name="third" sql-type="varchar" length="1000"/>
+        </property>
+
     </class>
 </hibernate-mapping>

@@ -5,19 +5,19 @@ import com.ivanovskiy.entity.QuestionsEntity;
 import java.util.List;
 
 /**
- * Created by B50-30 on 08.11.2015.
+ * Created by Alexey-Ivanovskiy on 07.08.2016.
  */
 public interface QuestionsEntityDAO {
 
     // Найти все вопросы с номером теста ?.
-    public List<QuestionsEntity> findAll(int testN);
+    List<QuestionsEntity> findAll();
+
+    // Найти все вопросы с номером теста ?.
+    QuestionsEntity getQuestionById(int id);
 
     // Добавить вопрос.
-    public QuestionsEntity add(QuestionsEntity testsEntity);
+    QuestionsEntity save(QuestionsEntity question);
 
-    // Обновить вопрос.
-    public QuestionsEntity save(QuestionsEntity testsEntity);
+    QuestionsEntity update(QuestionsEntity question);
 
-    // Удалить вопрос.
-    public void delete(QuestionsEntity testsEntity);
 }

@@ -4,18 +4,18 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.ivanovskiy.entity.ResultEntity" table="result">
+    <class name="com.ivanovskiy.entity.ResultEntity" table="result" schema="" catalog="test_db">
         <id name="id">
             <column name="id" sql-type="int" not-null="true"/>
         </id>
-        <property name="id_questions">
-            <column name="id_questions" sql-type="int" not-null="true"/>
-        </property>
         <property name="login">
             <column name="login" sql-type="varchar" length="55"/>
         </property>
-        <property name="name">
-            <column name="name" sql-type="varchar" length="55"/>
+        <property name="res">
+            <column name="res" sql-type="int"/>
+        </property>
+        <property name="datePass">
+            <column name="date_pass" sql-type="varchar"/>
         </property>
     </class>
 </hibernate-mapping>

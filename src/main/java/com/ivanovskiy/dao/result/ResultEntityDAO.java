@@ -10,7 +10,7 @@ public interface ResultEntityDAO {
     public List<ResultEntity> findAll();
 
     // Добавить результат.
-    public ResultEntity add(int id_questions, String login, String name);
+    public ResultEntity add(int id_questions, String login, int res);
 
     // Обновить результат.
     public ResultEntity save(ResultEntity resultEntity);

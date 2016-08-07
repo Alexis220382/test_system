@@ -5,6 +5,6 @@
 </head>
 <body>
   <h1>Ваши ответы приняты.</h1>
-<a href="/gettests.form">Вернуться к выбору теста.</a>
+<a href="/gettests">Вернуться к выбору теста.</a>
 </body>
 </html>

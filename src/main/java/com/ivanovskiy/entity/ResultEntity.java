@@ -3,28 +3,28 @@ package com.ivanovskiy.entity;
 import javax.persistence.*;
 
 /**
- * Created by B50-30 on 10.11.2015.
+ * Created by Alexey-Ivanovskiy on 07.08.2016.
  */
 @Entity
 @Table(name = "result", schema = "", catalog = "test_db")
 public class ResultEntity {
 
-    private QuestionsEntity questions;
+    private TestquestionsEntity testquestions;
 
     @ManyToOne
-    @JoinColumn(name = "id_questions")
-    public QuestionsEntity getQuestions() {
-        return this.questions;
+    @JoinColumn(name = "id_testquestions")
+    public TestquestionsEntity getTestquestionsEntity() {
+        return this.testquestions;
     }
 
-    public void setQuestions(QuestionsEntity questions) {
-        this.questions = questions;
+    public void setTestquestionsEntity(TestquestionsEntity testquestions) {
+        this.testquestions = testquestions;
     }
 
     private int id;
-    private int id_questions;
     private String login;
-    private String name;
+    private Integer res;
+    private String datePass;
 
     @Id
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
@@ -34,16 +34,6 @@ public class ResultEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "id_questions", nullable = true, insertable = true, updatable = true)
-    public int getId_questions() {
-        return id_questions;
-    }
-
-    public void setId_questions(int id_questions) {
-        this.id_questions = id_questions;
     }
 
     @Basic
@@ -57,13 +47,23 @@ public class ResultEntity {
     }
 
     @Basic
-    @Column(name = "name", nullable = true, insertable = true, updatable = true, length = 55)
-    public String getName() {
-        return name;
+    @Column(name = "res", nullable = true, insertable = true, updatable = true)
+    public Integer getRes() {
+        return res;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRes(Integer res) {
+        this.res = res;
+    }
+
+    @Basic
+    @Column(name = "date_pass", nullable = true, insertable = true, updatable = true)
+    public String getDatePass() {
+        return datePass;
+    }
+
+    public void setDatePass(String datePass) {
+        this.datePass = datePass;
     }
 
     @Override
@@ -75,7 +75,8 @@ public class ResultEntity {
 
         if (id != that.id) return false;
         if (login != null ? !login.equals(that.login) : that.login != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (res != null ? !res.equals(that.res) : that.res != null) return false;
+        if (datePass != null ? !datePass.equals(that.datePass) : that.datePass != null) return false;
 
         return true;
     }
@@ -84,7 +85,8 @@ public class ResultEntity {
     public int hashCode() {
         int result = id;
         result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (res != null ? res.hashCode() : 0);
+        result = 31 * result + (datePass != null ? datePass.hashCode() : 0);
         return result;
     }
 }
