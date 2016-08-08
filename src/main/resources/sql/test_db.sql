@@ -1,65 +1,52 @@
 DROP TABLE IF EXISTS `tests`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE IF NOT EXISTS `tests` (
-  `id`        INT(11)      NOT NULL AUTO_INCREMENT,
-  `name`      VARCHAR(255) DEFAULT NULL,
-  `date_from` VARCHAR(25)  DEFAULT NULL,
-  `date_to`   VARCHAR(25)  DEFAULT NULL,
+  `id`        INT(11) NOT NULL AUTO_INCREMENT,
+  `name`      VARCHAR(255)     DEFAULT NULL,
+  `date_from` VARCHAR(25)      DEFAULT NULL,
+  `date_to`   VARCHAR(25)      DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 DROP TABLE IF EXISTS `questions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE IF NOT EXISTS `questions` (
-  `id`     INT(11)       NOT NULL AUTO_INCREMENT,
-  `name`   VARCHAR(1000) DEFAULT NULL,
-  `first`  VARCHAR(1000) DEFAULT NULL,
-  `second` VARCHAR(1000) DEFAULT NULL,
-  `third`  VARCHAR(1000) DEFAULT NULL,
+  `id`     INT(11) NOT NULL AUTO_INCREMENT,
+  `name`   VARCHAR(1000)    DEFAULT NULL,
+  `first`  VARCHAR(1000)    DEFAULT NULL,
+  `second` VARCHAR(1000)    DEFAULT NULL,
+  `third`  VARCHAR(1000)    DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 DROP TABLE IF EXISTS `testquestions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE IF NOT EXISTS `testquestions` (
-  `id_tests`     INT(11) DEFAULT NULL,
-  `id_questions` INT(11) DEFAULT NULL,
-  PRIMARY KEY (`id_tests`),
-  PRIMARY KEY (`id_questions`),
-  KEY `id_tests` (`id_tests`),
-  KEY `id_questions` (`id_questions`),
-  CONSTRAINT `fk_tests` FOREIGN KEY (`id_tests`) REFERENCES `tests` (`id`),
-  CONSTRAINT `fk_questions` FOREIGN KEY (`id_questions`) REFERENCES `questions` (`id`)
+  `id_tests`     INT(11) NOT NULL,
+  `id_questions` INT(11) NOT NULL,
+  PRIMARY KEY (`id_questions`, `id_tests`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 DROP TABLE IF EXISTS `result`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE IF NOT EXISTS `result` (
-  `id`               INT(11)     NOT NULL AUTO_INCREMENT,
-  `id_testquestions` INT(11)     DEFAULT NULL,
-  `login`            VARCHAR(55) DEFAULT NULL,
-  `res`              INT(5)      DEFAULT NULL,
-  `date_pass`        VARCHAR(25) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_testquestions` (`id_testquestions`),
-  CONSTRAINT FK_TESTQUESTIONS FOREIGN KEY (`id_testquestions`) REFERENCES `testquestions` (`id`)
+  `id`          INT(11) NOT NULL AUTO_INCREMENT,
+  `id_test`     INT(11)          DEFAULT NULL,
+  `id_question` INT(11)          DEFAULT NULL,
+  `login`       VARCHAR(55)      DEFAULT NULL,
+  `res`         INT(5)           DEFAULT NULL,
+  `date_pass`   VARCHAR(25)      DEFAULT NULL,
+  PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
 DROP TABLE IF EXISTS `users`;

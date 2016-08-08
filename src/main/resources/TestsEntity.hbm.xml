@@ -17,9 +17,13 @@
         <property name="dateTo">
             <column name="date_to" sql-type="varchar" not-null="true"/>
         </property>
-        <set name="questions" cascade="save-update" table="testquestions">
+        <set name="questions" lazy="false" cascade="save-update" table="testquestions">
             <key column="id_tests"/>
-            <many-to-many column="id_questions" fetch="join" class="com.ivanovskiy.entity.QuestionsEntity"/>
+            <many-to-many column="id_questions" lazy="false" class="com.ivanovskiy.entity.QuestionsEntity"/>
+        </set>
+        <set name="results" cascade="all">
+            <key column="id_test"/>
+            <one-to-many class="com.ivanovskiy.entity.ResultEntity"/>
         </set>
     </class>
 </hibernate-mapping>

@@ -8,7 +8,7 @@ public interface TestsEntityDAO {
 
     List<TestsEntity> findAll();
 
-    TestsEntity getTestByName(String name);
+    TestsEntity getTestById(int id);
 
     TestsEntity save(TestsEntity testsEntity);
 

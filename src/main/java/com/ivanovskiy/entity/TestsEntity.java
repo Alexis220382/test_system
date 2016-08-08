@@ -10,27 +10,6 @@ import java.util.Set;
 @Table(name = "tests", schema = "", catalog = "test_db")
 public class TestsEntity {
 
-//    private Set<QuestionsEntity> questions = new HashSet<>();
-//
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "testquestions",
-//            //foreign key
-//            joinColumns = @JoinColumn(name = "id"),
-//            //foreign key for other side
-//            inverseJoinColumns = @JoinColumn(name = "id_questions"))
-//    public Set<QuestionsEntity> getQuestionsEntity() {
-//        return questions;
-//    }
-//
-//    public void setQuestionsEntity(Set<QuestionsEntity> questions) {
-//        this.questions = questions;
-//    }
-//
-//    public void addQuestionsEntity(QuestionsEntity question) {
-//        questions.add(question);
-//    }
-
-
     private int id;
     private String name;
     private String dateFrom;
@@ -117,5 +96,15 @@ public class TestsEntity {
 
     public void setQuestions(Set<QuestionsEntity> questions) {
         this.questions = questions;
+    }
+
+    private Set<ResultEntity> results;
+
+    public Set<ResultEntity> getResults() {
+        return results;
+    }
+
+    public void setResults(Set<ResultEntity> results) {
+        this.results = results;
     }
 }

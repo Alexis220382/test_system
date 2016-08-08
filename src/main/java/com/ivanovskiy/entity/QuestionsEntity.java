@@ -10,26 +10,6 @@ import java.util.Set;
 @Table(name = "questions", schema = "", catalog = "test_db")
 public class QuestionsEntity {
 
-//    private Set<TestsEntity> tests = new HashSet<>();
-//
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "testquestions",
-//            //foreign key for CarsEntity in employee_car table
-//            joinColumns = @JoinColumn(name = "id"),
-//            //foreign key for other side
-//            inverseJoinColumns = @JoinColumn(name = "id_tests"))
-//    public Set<TestsEntity> getTestsEntity() {
-//        return tests;
-//    }
-//
-//    public void setTestsEntity(Set<TestsEntity> tests) {
-//        this.tests = tests;
-//    }
-//
-//    public void addTestsEntity(TestsEntity test) {
-//        tests.add(test);
-//    }
-
     private int id;
     private String name;
     private String first;
@@ -115,13 +95,13 @@ public class QuestionsEntity {
         return result;
     }
 
-    private Set<TestsEntity> tests;
+    private Set<ResultEntity> results;
 
-    public Set<TestsEntity> getTests() {
-        return tests;
+    public Set<ResultEntity> getResults() {
+        return results;
     }
 
-    public void setTests(Set<TestsEntity> tests) {
-        this.tests = tests;
+    public void setResults(Set<ResultEntity> results) {
+        this.results = results;
     }
 }

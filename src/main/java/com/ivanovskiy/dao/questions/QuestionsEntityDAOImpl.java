@@ -16,16 +16,18 @@ public class QuestionsEntityDAOImpl implements QuestionsEntityDAO {
     @Override
     public List<QuestionsEntity> findAll() {
         Session session = null;
+        Transaction tx = null;
         List<QuestionsEntity> questions = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria criteria = session.createCriteria(QuestionsEntity.class);
             questions = criteria.list();
 
             tx.commit();
         } catch (Exception e) {
+            if (tx!=null) tx.rollback();
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при выборке", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {
@@ -38,13 +40,15 @@ public class QuestionsEntityDAOImpl implements QuestionsEntityDAO {
     @Override
     public QuestionsEntity getQuestionById(int id) {
         Session session = null;
+        Transaction tx = null;
         QuestionsEntity question = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
             question = (QuestionsEntity) session.createQuery("FROM QuestionsEntity WHERE id=" + id).list().get(0);
             tx.commit();
         } catch (Exception e) {
+            if (tx!=null) tx.rollback();
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при выборке", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {
@@ -56,13 +60,15 @@ public class QuestionsEntityDAOImpl implements QuestionsEntityDAO {
 
     @Override
     public QuestionsEntity save(QuestionsEntity question) {
+        Transaction tx = null;
         Session session = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
             session.save(question);
             tx.commit();
         } catch (Exception e) {
+            if (tx!=null) tx.rollback();
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при выборке", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {
@@ -74,13 +80,15 @@ public class QuestionsEntityDAOImpl implements QuestionsEntityDAO {
 
     @Override
     public QuestionsEntity update(QuestionsEntity question) {
+        Transaction tx = null;
         Session session = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
             session.update(question);
             tx.commit();
         } catch (Exception e) {
+            if (tx!=null) tx.rollback();
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при выборке", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {

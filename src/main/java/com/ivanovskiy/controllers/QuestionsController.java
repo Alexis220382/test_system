@@ -62,12 +62,9 @@ public class QuestionsController {
         TestsEntityDAO testsDAO = new TestsEntityDAOImpl();
         QuestionsEntityDAO questionsDAO = new QuestionsEntityDAOImpl();
 
-        TestsEntity newTest = new TestsEntity();
-        newTest.setName(request.getParameter("test_name"));
-        newTest.setDateFrom(request.getParameter("period_from"));
-        newTest.setDateTo(request.getParameter("period_to"));
+        TestsEntity test = new TestsEntity();
 
-        HashSet questions = new HashSet<>();
+        HashSet<QuestionsEntity> questions = new HashSet<>();
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("two"))));
@@ -85,12 +82,11 @@ public class QuestionsController {
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("fourteen"))));
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("fifteen"))));
 
-        newTest.setQuestions(questions);
-        testsDAO.save(newTest);
-
-
-        List<QuestionsEntity> entities = questionsDAO.findAll();
-
+        test.setName(request.getParameter("test_name"));
+        test.setDateFrom(request.getParameter("period_from"));
+        test.setDateTo(request.getParameter("period_to"));
+        test.setQuestions(questions);
+        testsDAO.save(test);
 
         request.getRequestDispatcher("/question").forward(request, response);
         return;

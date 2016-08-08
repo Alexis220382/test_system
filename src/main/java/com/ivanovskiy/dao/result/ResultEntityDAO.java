@@ -6,15 +6,9 @@ import java.util.List;
 
 public interface ResultEntityDAO {
 
-    // Найти все результаты.
-    public List<ResultEntity> findAll();
+    List<ResultEntity> findAll();
 
-    // Добавить результат.
-    public ResultEntity add(int id_questions, String login, int res);
+    ResultEntity save(ResultEntity result);
 
-    // Обновить результат.
-    public ResultEntity save(ResultEntity resultEntity);
-
-    // Удалить результат.
-    public void delete(ResultEntity resultEntity);
+    void delete(ResultEntity result);
 }

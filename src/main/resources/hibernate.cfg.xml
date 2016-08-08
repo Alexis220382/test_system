@@ -9,8 +9,8 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.charSet">utf8</property>
     <mapping resource="QuestionsEntity.hbm.xml"/>
-    <mapping resource="ResultEntity.hbm.xml"/>
     <mapping resource="TestsEntity.hbm.xml"/>
+    <mapping resource="ResultEntity.hbm.xml"/>
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>

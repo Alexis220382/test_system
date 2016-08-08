@@ -25,12 +25,11 @@
     </c:forEach>
      <input type="text" name="login" value="${login}" /><br />
      <input type="submit" name="button" value="Сдать тест" /><br /><br /><br />
-
 </form>
 
 <a href="/logout">Logout</a>
-
-
+<br/>
+<br/>
 <a href="/question">admin_panel</a>
 
 </body>

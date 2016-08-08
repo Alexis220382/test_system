@@ -20,9 +20,9 @@
         <property name="third">
             <column name="third" sql-type="varchar" length="1000"/>
         </property>
-        <set name="tests" cascade="save-update" table="testquestions">
-            <key column="id_questions"/>
-            <many-to-many column="id_tests" fetch="join" class="com.ivanovskiy.entity.TestsEntity"/>
+        <set name="results" cascade="all">
+            <key column="id_test"/>
+            <one-to-many class="com.ivanovskiy.entity.ResultEntity"/>
         </set>
     </class>
 </hibernate-mapping>

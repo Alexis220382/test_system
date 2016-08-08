@@ -14,16 +14,18 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
 
     public List<TestsEntity> findAll() {
         Session session = null;
+        Transaction tx = null;
         List<TestsEntity> testsEntities = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria criteria = session.createCriteria(TestsEntity.class);
             testsEntities = criteria.list();
 
             tx.commit();
         } catch (Exception e) {
+            if (tx!=null) tx.rollback();
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при выборке", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {
@@ -35,18 +37,20 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
     }
 
     @Override
-    public TestsEntity getTestByName(String name) {
+    public TestsEntity getTestById(int id) {
         Session session = null;
+        Transaction tx = null;
         TestsEntity test = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             Criteria criteria = session.createCriteria(TestsEntity.class);
-            criteria.add(Restrictions.eq("name", name));
+            criteria.add(Restrictions.eq("id", id));
             test = (TestsEntity) criteria.uniqueResult();
             tx.commit();
         } catch (Exception e) {
+            if (tx!=null) tx.rollback();
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при выборке", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {
@@ -58,15 +62,16 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
 
     public TestsEntity save(TestsEntity testsEntity) {
         Session session = null;
+        Transaction tx = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
             session.save(testsEntity);
             tx.commit();
             session.flush();
         } catch (Exception e) {
-            System.out.println("Кина не будет! Электричество кончилось");
-//            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при сохранении в базу данных", JOptionPane.OK_OPTION);
+            if (tx!=null) tx.rollback();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при сохранении в базу данных", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
@@ -77,10 +82,11 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
 
     public TestsEntity update(int id, String name) {
         Session session = null;
+        Transaction tx = null;
         TestsEntity testsEntities = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
 
             testsEntities.setId(id);
             testsEntities.setName(name);
@@ -88,10 +94,10 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
 
             tx.commit();
         } catch (Exception e) {
+            if (tx!=null) tx.rollback();
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при сохранении в базу данных", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {
-
                 session.close();
             }
         }
