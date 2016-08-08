@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
     <class name="com.ivanovskiy.entity.QuestionsEntity" table="questions" schema="" catalog="test_db">
@@ -20,6 +20,9 @@
         <property name="third">
             <column name="third" sql-type="varchar" length="1000"/>
         </property>
-
+        <set name="tests" cascade="save-update" table="testquestions">
+            <key column="id_questions"/>
+            <many-to-many column="id_tests" fetch="join" class="com.ivanovskiy.entity.TestsEntity"/>
+        </set>
     </class>
 </hibernate-mapping>

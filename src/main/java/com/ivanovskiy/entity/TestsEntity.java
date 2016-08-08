@@ -1,7 +1,6 @@
 package com.ivanovskiy.entity;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -11,31 +10,40 @@ import java.util.Set;
 @Table(name = "tests", schema = "", catalog = "test_db")
 public class TestsEntity {
 
-    private Set<QuestionsEntity> questions = new HashSet<>();
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "testquestions",
-            //foreign key
-            joinColumns = @JoinColumn(name = "id_tests"),
-            //foreign key for other side
-            inverseJoinColumns = @JoinColumn(name = "id_questions"))
-    public Set<QuestionsEntity> getQuestionsEntity () {
-        return questions;
-    }
-
-    public void setQuestionsEntity(Set<QuestionsEntity> questions) {
-        this.questions = questions;
-    }
-
-    public void addQuestionsEntity(QuestionsEntity question) {
-        questions.add(question);
-    }
+//    private Set<QuestionsEntity> questions = new HashSet<>();
+//
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "testquestions",
+//            //foreign key
+//            joinColumns = @JoinColumn(name = "id"),
+//            //foreign key for other side
+//            inverseJoinColumns = @JoinColumn(name = "id_questions"))
+//    public Set<QuestionsEntity> getQuestionsEntity() {
+//        return questions;
+//    }
+//
+//    public void setQuestionsEntity(Set<QuestionsEntity> questions) {
+//        this.questions = questions;
+//    }
+//
+//    public void addQuestionsEntity(QuestionsEntity question) {
+//        questions.add(question);
+//    }
 
 
     private int id;
     private String name;
     private String dateFrom;
     private String dateTo;
+
+    public TestsEntity() {
+    }
+
+    public TestsEntity(String name, String dateFrom, String dateTo) {
+        this.name = name;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+    }
 
     @Id
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
@@ -99,5 +107,15 @@ public class TestsEntity {
         result = 31 * result + (dateFrom != null ? dateFrom.hashCode() : 0);
         result = 31 * result + (dateTo != null ? dateTo.hashCode() : 0);
         return result;
+    }
+
+    private Set<QuestionsEntity> questions;
+
+    public Set<QuestionsEntity> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<QuestionsEntity> questions) {
+        this.questions = questions;
     }
 }

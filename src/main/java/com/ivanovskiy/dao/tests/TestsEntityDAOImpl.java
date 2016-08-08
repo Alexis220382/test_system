@@ -63,8 +63,10 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
             Transaction tx = session.beginTransaction();
             session.save(testsEntity);
             tx.commit();
+            session.flush();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при сохранении в базу данных", JOptionPane.OK_OPTION);
+            System.out.println("Кина не будет! Электричество кончилось");
+//            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при сохранении в базу данных", JOptionPane.OK_OPTION);
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();

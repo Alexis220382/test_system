@@ -9,17 +9,17 @@ import javax.persistence.*;
 @Table(name = "result", schema = "", catalog = "test_db")
 public class ResultEntity {
 
-    private TestquestionsEntity testquestions;
-
-    @ManyToOne
-    @JoinColumn(name = "id_testquestions")
-    public TestquestionsEntity getTestquestionsEntity() {
-        return this.testquestions;
-    }
-
-    public void setTestquestionsEntity(TestquestionsEntity testquestions) {
-        this.testquestions = testquestions;
-    }
+//    private TestquestionsEntity testquestions;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "id_testquestions")
+//    public TestquestionsEntity getTestquestionsEntity() {
+//        return this.testquestions;
+//    }
+//
+//    public void setTestquestionsEntity(TestquestionsEntity testquestions) {
+//        this.testquestions = testquestions;
+//    }
 
     private int id;
     private String login;

@@ -10,13 +10,8 @@
        <security:http pattern="/css/**" security="none" />
 
        <security:http auto-config="true">
-              <security:intercept-url pattern="login.jsp" access="ROLE_ADMIN" />
-              <security:intercept-url pattern="adminpanel.jsp" access="ROLE_ADMIN" />
-              <security:intercept-url pattern="login.jsp" access="ROLE_USER" />
-              <security:intercept-url pattern="start.jsp" access="ROLE_USER" />
-              <security:intercept-url pattern="newuser.jsp" access="ROLE_USER" />
-              <security:intercept-url pattern="questions.jsp" access="ROLE_USER" />
-              <security:intercept-url pattern="result.jsp" access="ROLE_USER" />
+              <security:intercept-url pattern="**/**" access="ROLE_ADMIN" />
+              <security:intercept-url pattern="**/**" access="ROLE_USER" />
               <security:form-login login-page="/login"
                                    default-target-url="/welcome"
                                    authentication-failure-url="/failure.jsp"/>

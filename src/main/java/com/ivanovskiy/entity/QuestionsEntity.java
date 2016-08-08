@@ -1,7 +1,6 @@
 package com.ivanovskiy.entity;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -11,31 +10,34 @@ import java.util.Set;
 @Table(name = "questions", schema = "", catalog = "test_db")
 public class QuestionsEntity {
 
-    private Set<TestsEntity> tests = new HashSet<>();
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "testquestions",
-            //foreign key for CarsEntity in employee_car table
-            joinColumns = @JoinColumn(name = "id_questions"),
-            //foreign key for other side
-            inverseJoinColumns = @JoinColumn(name = "id_tests"))
-    public Set<TestsEntity> getTestsEntity () {
-        return tests;
-    }
-
-    public void setTestsEntity(Set<TestsEntity> tests) {
-        this.tests = tests;
-    }
-
-    public void addTestsEntity(TestsEntity test) {
-        tests.add(test);
-    }
+//    private Set<TestsEntity> tests = new HashSet<>();
+//
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "testquestions",
+//            //foreign key for CarsEntity in employee_car table
+//            joinColumns = @JoinColumn(name = "id"),
+//            //foreign key for other side
+//            inverseJoinColumns = @JoinColumn(name = "id_tests"))
+//    public Set<TestsEntity> getTestsEntity() {
+//        return tests;
+//    }
+//
+//    public void setTestsEntity(Set<TestsEntity> tests) {
+//        this.tests = tests;
+//    }
+//
+//    public void addTestsEntity(TestsEntity test) {
+//        tests.add(test);
+//    }
 
     private int id;
     private String name;
     private String first;
     private String second;
     private String third;
+
+    public QuestionsEntity() {
+    }
 
     @Id
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
@@ -111,5 +113,15 @@ public class QuestionsEntity {
         result = 31 * result + (second != null ? second.hashCode() : 0);
         result = 31 * result + (third != null ? third.hashCode() : 0);
         return result;
+    }
+
+    private Set<TestsEntity> tests;
+
+    public Set<TestsEntity> getTests() {
+        return tests;
+    }
+
+    public void setTests(Set<TestsEntity> tests) {
+        this.tests = tests;
     }
 }

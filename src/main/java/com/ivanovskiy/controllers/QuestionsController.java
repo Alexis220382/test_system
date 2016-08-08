@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -65,34 +66,31 @@ public class QuestionsController {
         newTest.setName(request.getParameter("test_name"));
         newTest.setDateFrom(request.getParameter("period_from"));
         newTest.setDateTo(request.getParameter("period_to"));
-        request.getParameter("period_to");
 
-//        TestsEntity testFromDB = testsDAO.getTestByName(newTest.getName());
+        HashSet questions = new HashSet<>();
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("two"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("three"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("four"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("five"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("six"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("seven"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("eight"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("nine"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("ten"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("eleven"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("twelve"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("thirteen"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("fourteen"))));
+        questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("fifteen"))));
 
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("two"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("three"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("four"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("five"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("six"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("seven"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("eight"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("nine"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("ten"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("eleven"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("twelve"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("thirteen"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("fourteen"))));
-        newTest.getQuestionsEntity().add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("fifteen"))));
-
-        System.out.println(newTest.getQuestionsEntity().toString());
+        newTest.setQuestions(questions);
         testsDAO.save(newTest);
 
-        for (QuestionsEntity question : newTest.getQuestionsEntity()) {
-            question.getTestsEntity().add(newTest);
-            questionsDAO.update(question);
-        }
+
+        List<QuestionsEntity> entities = questionsDAO.findAll();
+
 
         request.getRequestDispatcher("/question").forward(request, response);
         return;
