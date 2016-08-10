@@ -126,5 +126,7 @@
     <input type="text" id="third_variant" name="third_variant"><br />
     <input type="submit" value="Создать вопрос">
 </form>
+<br/><br/>
+<a href="/gettests">Вернуться к тестам</a>
 </body>
 </html>

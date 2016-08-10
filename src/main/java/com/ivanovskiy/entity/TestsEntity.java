@@ -2,6 +2,7 @@ package com.ivanovskiy.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -89,7 +90,7 @@ public class TestsEntity implements Serializable{
         return result;
     }
 
-    private Set<QuestionsEntity> questions;
+    private Set<QuestionsEntity> questions = new HashSet<>();
 
     public Set<QuestionsEntity> getQuestions() {
         return questions;

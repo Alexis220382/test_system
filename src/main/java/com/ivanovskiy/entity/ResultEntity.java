@@ -9,8 +9,6 @@ import javax.persistence.*;
 @Table(name = "result", schema = "", catalog = "test_db")
 public class ResultEntity {
     private int id;
-    private Integer idTest;
-    private Integer idQuestion;
     private String login;
     private Integer res;
     private String datePass;
@@ -23,26 +21,6 @@ public class ResultEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "id_test", nullable = true, insertable = true, updatable = true)
-    public Integer getIdTest() {
-        return idTest;
-    }
-
-    public void setIdTest(Integer idTest) {
-        this.idTest = idTest;
-    }
-
-    @Basic
-    @Column(name = "id_question", nullable = true, insertable = true, updatable = true)
-    public Integer getIdQuestion() {
-        return idQuestion;
-    }
-
-    public void setIdQuestion(Integer idQuestion) {
-        this.idQuestion = idQuestion;
     }
 
     @Basic
@@ -83,8 +61,6 @@ public class ResultEntity {
         ResultEntity that = (ResultEntity) o;
 
         if (id != that.id) return false;
-        if (idTest != null ? !idTest.equals(that.idTest) : that.idTest != null) return false;
-        if (idQuestion != null ? !idQuestion.equals(that.idQuestion) : that.idQuestion != null) return false;
         if (login != null ? !login.equals(that.login) : that.login != null) return false;
         if (res != null ? !res.equals(that.res) : that.res != null) return false;
         if (datePass != null ? !datePass.equals(that.datePass) : that.datePass != null) return false;
@@ -95,13 +71,29 @@ public class ResultEntity {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (idTest != null ? idTest.hashCode() : 0);
-        result = 31 * result + (idQuestion != null ? idQuestion.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (res != null ? res.hashCode() : 0);
         result = 31 * result + (datePass != null ? datePass.hashCode() : 0);
         return result;
     }
 
+    private TestsEntity test;
 
+    public TestsEntity getTest() {
+        return test;
+    }
+
+    public void setTest(TestsEntity test) {
+        this.test = test;
+    }
+
+    private QuestionsEntity question;
+
+    public QuestionsEntity getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(QuestionsEntity question) {
+        this.question = question;
+    }
 }

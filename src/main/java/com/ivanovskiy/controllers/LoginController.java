@@ -42,19 +42,19 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(ModelMap model){
-
+    public String logout(HttpSession session){
+        session.removeAttribute("login");
         return "logout";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(ModelMap model){
+    public String home(){
 
         return "index";
     }
 
     @RequestMapping(value = "/failure", method = RequestMethod.GET)
-    public String failure(ModelMap model){
+    public String failure(){
 
         return "failure";
     }

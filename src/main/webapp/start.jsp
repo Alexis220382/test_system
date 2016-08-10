@@ -10,8 +10,8 @@
 <p style="color: red">${error}</p>
 <h3>Вы вошли под именем: ${login}</h3>
 
+<c:set var="admin" value="${'ROLE_ADMIN'}"/>
 <c:forEach var="auth" items="${auths}">
-    <c:set var="admin" value="${'ROLE_ADMIN'}"/>
     <c:if test="${auth eq admin}">
         <c:out value="Вы вошли с правами администратора."/>
     </c:if>
@@ -31,7 +31,11 @@
 <a href="/logout">Logout</a>
 <br/>
 <br/>
-<a href="/admin/question">Admin_panel</a>
+<c:forEach var="auth" items="${auths}">
+    <c:if test="${auth eq admin}">
+        <a href="/admin/question">Admin_panel</a>
+    </c:if>
+</c:forEach>
 
 </body>
 </html>

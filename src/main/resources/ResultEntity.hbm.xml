@@ -8,12 +8,6 @@
         <id name="id">
             <column name="id" sql-type="int" not-null="true"/>
         </id>
-        <property name="idTest">
-            <column name="id_test" sql-type="int"/>
-        </property>
-        <property name="idQuestion">
-            <column name="id_question" sql-type="int"/>
-        </property>
         <property name="login">
             <column name="login" sql-type="varchar" length="55"/>
         </property>
@@ -23,5 +17,9 @@
         <property name="datePass">
             <column name="date_pass" sql-type="varchar" length="25"/>
         </property>
+        <many-to-one name="question" column="id_question" unique="true"
+                     class="com.ivanovskiy.entity.QuestionsEntity" not-null="true"/>
+        <many-to-one name="test" column="id_test"
+                     class="com.ivanovskiy.entity.TestsEntity" not-null="true"/>
     </class>
 </hibernate-mapping>

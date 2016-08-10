@@ -12,7 +12,7 @@
   <label for="password">Password: </label>
   <input id="password" name="password" size="20" maxlength="50" type="text" />
 
-  <label for="role">Password: </label>
+  <label for="role">Role: </label>
   <select id="role" name="role" >
     <option value="ROLE_USER">Пользователь</option>
     <option value="ROLE_ADMIN">Администратор</option>
@@ -20,5 +20,7 @@
 
   <input type="submit" value="Регистрация" />
 </form>
+<br/><br/>
+<a href="login.jsp">Выход</a>
 </body>
 </html>

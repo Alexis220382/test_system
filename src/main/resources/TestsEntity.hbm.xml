@@ -7,6 +7,7 @@
     <class name="com.ivanovskiy.entity.TestsEntity" table="tests" schema="" catalog="test_db">
         <id name="id">
             <column name="id" sql-type="int" not-null="true"/>
+            <generator class="increment"/>
         </id>
         <property name="name">
             <column name="name" sql-type="varchar"/>
@@ -18,7 +19,7 @@
             <column name="date_to" sql-type="varchar" not-null="true"/>
         </property>
         <set name="questions" table="testquestions"
-             inverse="false" lazy="false" fetch="select" cascade="save-update" >
+             inverse="false" lazy="false" fetch="select" cascade="all" >
             <key>
                 <column name="id_tests" not-null="true" />
             </key>

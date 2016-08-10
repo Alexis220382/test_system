@@ -1,5 +1,7 @@
 package com.ivanovskiy.controllers;
 
+import com.ivanovskiy.dao.questions.QuestionsEntityDAO;
+import com.ivanovskiy.dao.questions.QuestionsEntityDAOImpl;
 import com.ivanovskiy.dao.result.ResultEntityDAO;
 import com.ivanovskiy.dao.result.ResultEntityDAOImpl;
 import com.ivanovskiy.dao.tests.TestsEntityDAO;
@@ -48,7 +50,7 @@ public class ResultController {
             request.setAttribute("error", "Вы ничего не выбрали.");
             request.getRequestDispatcher("/gettests").forward(request, response);
         }
-        if (session.getAttribute("testN") == null) {
+        if (session.getAttribute("testN") == null || session.getAttribute("testN").equals("")) {
             session.setAttribute("testN", request.getParameter("testN"));
         }
         test = testsDAO.getTestById(Integer.parseInt(request.getParameter("testN")));
@@ -67,22 +69,29 @@ public class ResultController {
     @RequestMapping(value = "/result", method = RequestMethod.GET)
     public String setResult(HttpServletRequest request, HttpSession session) {
         ResultEntityDAO resultDAO = new ResultEntityDAOImpl();
+        QuestionsEntityDAO questionDAO = new QuestionsEntityDAOImpl();
+        TestsEntityDAO testDAO = new TestsEntityDAOImpl();
 
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
         String date = format.format(today);
+        QuestionsEntity question;
+        TestsEntity test;
 
         ResultEntity result;
         for (int i = 1; i < 15; i++) {
             if (request.getParameter("id" + i).equals("")) break;
+            question = questionDAO.getQuestionById(Integer.parseInt(request.getParameter("id"+i)));
+            test = testDAO.getTestById(Integer.parseInt(request.getParameter("testN")));
             result = new ResultEntity();
-            result.setIdQuestion(Integer.parseInt(request.getParameter("id" + i)));
+            result.setQuestion(question);
             result.setLogin(String.valueOf(session.getAttribute("login")));
             result.setRes(Integer.parseInt(request.getParameter("answer" + i)));
-            result.setIdTest(Integer.parseInt(request.getParameter("testN")));
+            result.setTest(test);
             result.setDatePass(date);
             resultDAO.save(result);
         }
+        session.removeAttribute("testN");
         return "result";
     }
 }

@@ -5,6 +5,7 @@ import com.ivanovskiy.entity.QuestionsEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import javax.swing.*;
 import java.util.List;
@@ -45,7 +46,9 @@ public class QuestionsEntityDAOImpl implements QuestionsEntityDAO {
         try {
             session = ManageSessionFactory.getFactory().openSession();
             tx = session.beginTransaction();
-            question = (QuestionsEntity) session.createQuery("FROM QuestionsEntity WHERE id=" + id).list().get(0);
+            Criteria criteria = session.createCriteria(QuestionsEntity.class);
+            criteria.add(Restrictions.eq("id", id));
+            question = (QuestionsEntity) criteria.uniqueResult();
             tx.commit();
         } catch (Exception e) {
             if (tx!=null) tx.rollback();

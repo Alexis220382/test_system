@@ -69,9 +69,6 @@ public class QuestionsController {
         QuestionsEntityDAO questionsDAO = new QuestionsEntityDAOImpl();
 
         TestsEntity test = new TestsEntity();
-        QuestionsEntity question = new QuestionsEntity();
-
-        HashSet<TestsEntity> tests = new HashSet<>();
         HashSet<QuestionsEntity> questions = new HashSet<>();
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
@@ -94,7 +91,7 @@ public class QuestionsController {
         test.setDateFrom(request.getParameter("period_from"));
         test.setDateTo(request.getParameter("period_to"));
         test.setQuestions(questions);
-        test = testsDAO.save(test);
+        testsDAO.save(test);
 
         request.getRequestDispatcher("/admin/question").forward(request, response);
         return;
