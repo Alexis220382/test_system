@@ -8,7 +8,7 @@
 <h3>Панель администратора</h3>
 
 <%--Список вопросов для компоновки теста--%>
-<form name="create_test" action="/newtest" method="get">
+<form name="create_test" action="/admin/newtest" method="get">
     <label for="test_name">Наименование теста: </label>
     <input type="text" id="test_name" name="test_name" value=""><br />
     <label for="one">Первый вопрос: </label>
@@ -113,7 +113,7 @@
 </form>
 
 <%--//Для внесения нового вопроса в базу--%>
-<form name="create_question" action="/newquestion" method="get">
+<form name="create_question" action="/admin/newquestion" method="get">
     <h3 style="color: #398439">${message}</h3>
     <h3>Добавление нового вопроса в базу данных.</h3>
     <label for="new_question">Текст вопроса: </label>

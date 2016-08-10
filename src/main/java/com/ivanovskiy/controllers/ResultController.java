@@ -17,11 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 @Controller
 public class ResultController {
 
-    //At first!!!
     @RequestMapping(value = "/gettests", method = RequestMethod.GET)
     public ModelAndView getTests(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
@@ -51,10 +54,11 @@ public class ResultController {
         test = testsDAO.getTestById(Integer.parseInt(request.getParameter("testN")));
         int i = 1;
         for (QuestionsEntity question : test.getQuestions()) {
-            request.setAttribute("qName"+i, question.getName());
-            request.setAttribute("first_answer"+i, question.getFirst());
-            request.setAttribute("second_answer"+i, question.getSecond());
-            request.setAttribute("third_answer"+i, question.getThird());
+            request.setAttribute("qName" + i, question.getName());
+            request.setAttribute("first_answer" + i, question.getFirst());
+            request.setAttribute("second_answer" + i, question.getSecond());
+            request.setAttribute("third_answer" + i, question.getThird());
+            request.setAttribute("questionId" + i, question.getId());
             i++;
         }
         return "questions";
@@ -64,14 +68,19 @@ public class ResultController {
     public String setResult(HttpServletRequest request, HttpSession session) {
         ResultEntityDAO resultDAO = new ResultEntityDAOImpl();
 
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String date = format.format(today);
+
         ResultEntity result;
-        for (int i = 1; i <=15 ; i++) {
+        for (int i = 1; i < 15; i++) {
+            if (request.getParameter("id" + i).equals("")) break;
             result = new ResultEntity();
-            result.setIdTest(Integer.parseInt(request.getParameter("testN")));
-            result.setIdQuestion(Integer.parseInt(request.getParameter("qName" + i)));
+            result.setIdQuestion(Integer.parseInt(request.getParameter("id" + i)));
             result.setLogin(String.valueOf(session.getAttribute("login")));
-            result.setRes(Integer.parseInt(request.getParameter("answer"+i)));
-            //Дату не забыть
+            result.setRes(Integer.parseInt(request.getParameter("answer" + i)));
+            result.setIdTest(Integer.parseInt(request.getParameter("testN")));
+            result.setDatePass(date);
             resultDAO.save(result);
         }
         return "result";

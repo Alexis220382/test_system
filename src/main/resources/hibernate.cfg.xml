@@ -8,6 +8,8 @@
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.charSet">utf8</property>
+    <property name="show_sql">true</property>
+    <property name="format_sql">true</property>
     <mapping resource="QuestionsEntity.hbm.xml"/>
     <mapping resource="TestsEntity.hbm.xml"/>
     <mapping resource="ResultEntity.hbm.xml"/>

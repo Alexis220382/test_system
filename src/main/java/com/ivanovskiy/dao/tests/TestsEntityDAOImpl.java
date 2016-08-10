@@ -105,21 +105,5 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
     }
 
     public void delete(TestsEntity testsEntity) {
-//        Session session = null;
-//        try {
-//            session = ManageSessionFactory.getFactory().openSession();
-//            Transaction tx = session.beginTransaction();
-//
-//            session.delete(testsEntity);
-//
-//            tx.commit();
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении из базы данных", JOptionPane.OK_OPTION);
-//        } finally {
-//            if (session != null && session.isOpen()) {
-//
-//                session.close();
-//            }
-//        }
     }
 }

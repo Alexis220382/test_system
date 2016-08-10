@@ -6,6 +6,7 @@ import com.ivanovskiy.dao.tests.TestsEntityDAO;
 import com.ivanovskiy.dao.tests.TestsEntityDAOImpl;
 import com.ivanovskiy.entity.QuestionsEntity;
 import com.ivanovskiy.entity.TestsEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +26,16 @@ import java.util.List;
 @Controller
 public class QuestionsController {
 
-    @RequestMapping(value = "/question", method = RequestMethod.GET)
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/question", method = RequestMethod.GET)
     public String getQuestions(ModelMap model) {
         QuestionsEntityDAO questionsDAO = new QuestionsEntityDAOImpl();
         model.addAttribute("questions", questionsDAO.findAll());
         return "adminpanel";
     }
 
-    @RequestMapping(value = "/newquestion", method = RequestMethod.GET)
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/newquestion", method = RequestMethod.GET)
     public void newQuestion(ModelMap model,
                             HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         QuestionsEntityDAO questionsDAO = new QuestionsEntityDAOImpl();
@@ -41,7 +44,7 @@ public class QuestionsController {
         for (QuestionsEntity ques : questions) {
             if (request.getParameter("new_question").equals(ques.getName())) {
                 request.setAttribute("message", "Такой вопрос уже есть в базе.");
-                request.getRequestDispatcher("/question").forward(request, response);
+                request.getRequestDispatcher("/admin/question").forward(request, response);
                 return;
             }
         }
@@ -50,20 +53,25 @@ public class QuestionsController {
         question.setFirst(request.getParameter("first_variant"));
         question.setSecond(request.getParameter("second_variant"));
         question.setThird(request.getParameter("third_variant"));
+
         questionsDAO.save(question);
         request.setAttribute("message", "Вопрос успешно добавлен.");
-        request.getRequestDispatcher("/question").forward(request, response);
+        request.getRequestDispatcher("/admin/question").forward(request, response);
         return;
     }
 
-    @RequestMapping(value = "/newtest", method = RequestMethod.GET)
-    public void newTest(HttpServletRequest request, HttpServletResponse response) throws ParseException, ServletException, IOException {
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/newtest", method = RequestMethod.GET)
+    public void newTest(HttpServletRequest request, HttpServletResponse response)
+            throws ParseException, ServletException, IOException {
 
         TestsEntityDAO testsDAO = new TestsEntityDAOImpl();
         QuestionsEntityDAO questionsDAO = new QuestionsEntityDAOImpl();
 
         TestsEntity test = new TestsEntity();
+        QuestionsEntity question = new QuestionsEntity();
 
+        HashSet<TestsEntity> tests = new HashSet<>();
         HashSet<QuestionsEntity> questions = new HashSet<>();
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
@@ -86,9 +94,9 @@ public class QuestionsController {
         test.setDateFrom(request.getParameter("period_from"));
         test.setDateTo(request.getParameter("period_to"));
         test.setQuestions(questions);
-        testsDAO.save(test);
+        test = testsDAO.save(test);
 
-        request.getRequestDispatcher("/question").forward(request, response);
+        request.getRequestDispatcher("/admin/question").forward(request, response);
         return;
     }
 }

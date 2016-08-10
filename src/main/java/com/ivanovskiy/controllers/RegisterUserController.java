@@ -15,6 +15,7 @@ import java.util.Set;
 
 @Controller
 public class RegisterUserController{
+
 	@Autowired
 	private UserDetailsManager userDetailsService;
 

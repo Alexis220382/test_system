@@ -1,6 +1,7 @@
 package com.ivanovskiy.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "questions", schema = "", catalog = "test_db")
-public class QuestionsEntity {
+public class QuestionsEntity implements Serializable {
 
     private int id;
     private String name;
@@ -17,6 +18,13 @@ public class QuestionsEntity {
     private String third;
 
     public QuestionsEntity() {
+    }
+
+    public QuestionsEntity(String name, String first, String second, String third) {
+        this.name = name;
+        this.first = first;
+        this.second = second;
+        this.third = third;
     }
 
     @Id
@@ -95,13 +103,14 @@ public class QuestionsEntity {
         return result;
     }
 
-    private Set<ResultEntity> results;
 
-    public Set<ResultEntity> getResults() {
-        return results;
+    private Set<TestsEntity> tests;
+
+    public Set<TestsEntity> getTests() {
+        return tests;
     }
 
-    public void setResults(Set<ResultEntity> results) {
-        this.results = results;
+    public void setTests(Set<TestsEntity> tests) {
+        this.tests = tests;
     }
 }

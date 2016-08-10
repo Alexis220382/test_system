@@ -23,9 +23,5 @@
         <property name="datePass">
             <column name="date_pass" sql-type="varchar" length="25"/>
         </property>
-        <set name="questions" lazy="false" cascade="save-update" table="testquestions">
-            <key column="id_tests"/>
-            <many-to-many column="id_questions" lazy="false" class="com.ivanovskiy.entity.QuestionsEntity"/>
-        </set>
     </class>
 </hibernate-mapping>

@@ -1,7 +1,6 @@
 package com.ivanovskiy.entity;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * Created by Alexey-Ivanovskiy on 08.08.2016.
@@ -104,14 +103,5 @@ public class ResultEntity {
         return result;
     }
 
-    private Set<QuestionsEntity> questions;
-
-    public Set<QuestionsEntity> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(Set<QuestionsEntity> questions) {
-        this.questions = questions;
-    }
 
 }

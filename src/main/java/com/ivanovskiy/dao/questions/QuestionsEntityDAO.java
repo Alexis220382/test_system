@@ -9,13 +9,10 @@ import java.util.List;
  */
 public interface QuestionsEntityDAO {
 
-    // Найти все вопросы с номером теста ?.
     List<QuestionsEntity> findAll();
 
-    // Найти все вопросы с номером теста ?.
     QuestionsEntity getQuestionById(int id);
 
-    // Добавить вопрос.
     QuestionsEntity save(QuestionsEntity question);
 
     QuestionsEntity update(QuestionsEntity question);

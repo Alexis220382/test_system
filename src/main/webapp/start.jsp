@@ -23,14 +23,15 @@
     <c:forEach var="test" items="${tests}">
         <input type="radio" id="testN" name="testN" value="${test.id}">${test.name}<br />
     </c:forEach>
-     <input type="text" name="login" value="${login}" /><br />
+    <br/>
+     <input type="hidden" name="login" value="${login}" /><br />
      <input type="submit" name="button" value="Сдать тест" /><br /><br /><br />
 </form>
 
 <a href="/logout">Logout</a>
 <br/>
 <br/>
-<a href="/question">admin_panel</a>
+<a href="/admin/question">Admin_panel</a>
 
 </body>
 </html>
