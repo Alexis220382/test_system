@@ -6,10 +6,15 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * Created by Alexey-Ivanovskiy on 07.08.2016.
+ */
+@Component
 public class TestsEntityDAOImpl implements TestsEntityDAO {
 
     public List<TestsEntity> findAll() {

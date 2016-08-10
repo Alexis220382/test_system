@@ -4,10 +4,15 @@ import com.ivanovskiy.dao.ManageSessionFactory;
 import com.ivanovskiy.entity.ResultEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * Created by Alexey-Ivanovskiy on 07.08.2016.
+ */
+@Component
 public class ResultEntityDAOImpl implements ResultEntityDAO {
 
     public List<ResultEntity> findAll() {

@@ -106,6 +106,5 @@
     <br />
     <input type="submit" name="submit" value="Ответить">
 </form>
-
 </body>
 </html>

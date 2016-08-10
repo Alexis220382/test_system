@@ -1,11 +1,10 @@
 package com.ivanovskiy.controllers;
 
 import com.ivanovskiy.dao.questions.QuestionsEntityDAO;
-import com.ivanovskiy.dao.questions.QuestionsEntityDAOImpl;
 import com.ivanovskiy.dao.tests.TestsEntityDAO;
-import com.ivanovskiy.dao.tests.TestsEntityDAOImpl;
 import com.ivanovskiy.entity.QuestionsEntity;
 import com.ivanovskiy.entity.TestsEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,10 +25,14 @@ import java.util.List;
 @Controller
 public class QuestionsController {
 
+    @Autowired
+    private QuestionsEntityDAO questionsDAO;
+    @Autowired
+    private TestsEntityDAO testDAO;
+
     @PreAuthorize(value = "ROLE_ADMIN")
     @RequestMapping(value = "admin/question", method = RequestMethod.GET)
     public String getQuestions(ModelMap model) {
-        QuestionsEntityDAO questionsDAO = new QuestionsEntityDAOImpl();
         model.addAttribute("questions", questionsDAO.findAll());
         return "adminpanel";
     }
@@ -38,7 +41,6 @@ public class QuestionsController {
     @RequestMapping(value = "admin/newquestion", method = RequestMethod.GET)
     public void newQuestion(ModelMap model,
                             HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        QuestionsEntityDAO questionsDAO = new QuestionsEntityDAOImpl();
         List<QuestionsEntity> questions = questionsDAO.findAll();
         model.addAttribute("questions", questions);
         for (QuestionsEntity ques : questions) {
@@ -64,10 +66,6 @@ public class QuestionsController {
     @RequestMapping(value = "admin/newtest", method = RequestMethod.GET)
     public void newTest(HttpServletRequest request, HttpServletResponse response)
             throws ParseException, ServletException, IOException {
-
-        TestsEntityDAO testsDAO = new TestsEntityDAOImpl();
-        QuestionsEntityDAO questionsDAO = new QuestionsEntityDAOImpl();
-
         TestsEntity test = new TestsEntity();
         HashSet<QuestionsEntity> questions = new HashSet<>();
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("one"))));
@@ -91,7 +89,7 @@ public class QuestionsController {
         test.setDateFrom(request.getParameter("period_from"));
         test.setDateTo(request.getParameter("period_to"));
         test.setQuestions(questions);
-        testsDAO.save(test);
+        testDAO.save(test);
 
         request.getRequestDispatcher("/admin/question").forward(request, response);
         return;

@@ -7,7 +7,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -22,10 +21,8 @@ public class LoginController {
 
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcome(
-            HttpServletRequest request, HttpServletResponse response,
-            Principal principal, Authentication auth) throws IOException {
-
-        HttpSession session = request.getSession();
+            HttpServletResponse response, Principal principal,
+            Authentication auth, HttpSession session) throws IOException {
 
         Collection<? extends GrantedAuthority> auths = auth.getAuthorities();
         session.setAttribute("auths", auths);
@@ -44,6 +41,7 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session){
         session.removeAttribute("login");
+        session.removeAttribute("auths");
         return "logout";
     }
 
