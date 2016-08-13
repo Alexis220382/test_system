@@ -4,7 +4,7 @@
 <%@ page session="true"%>
 <html>
 <head>
-  <title>Sign In</title>
+  <title>Warning</title>
 </head>
 <body>
 <h1 style="color: red">Incorrect login or password.<br/>Try again, please.</h1>

@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Перечень вопросов</title>
+    <title>Questions roster</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 1. Подключаем скомпилированный и минимизированный файл CSS Bootstrap 3 -->

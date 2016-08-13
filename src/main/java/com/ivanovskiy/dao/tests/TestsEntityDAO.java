@@ -12,7 +12,7 @@ public interface TestsEntityDAO {
 
     TestsEntity save(TestsEntity testsEntity);
 
-    TestsEntity update(int id, String name);
+    TestsEntity update(int id, String dateFrom, String dateTo);
 
     void delete(TestsEntity testsEntity);
 }

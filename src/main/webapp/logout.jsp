@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title></title>
+    <title>Logout</title>
 </head>
 <body>
 <h3>You logout from user ${name} successfully.</h3>

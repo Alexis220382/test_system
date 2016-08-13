@@ -7,7 +7,9 @@ import com.ivanovskiy.entity.QuestionsEntity;
 import com.ivanovskiy.entity.ResultEntity;
 import com.ivanovskiy.entity.TestsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 @Controller
 public class ResultController {
@@ -33,11 +35,45 @@ public class ResultController {
     private ResultEntityDAO resultDAO;
 
     @RequestMapping(value = "/gettests", method = RequestMethod.GET)
-    public ModelAndView getTests(HttpServletRequest request, HttpSession session) {
+    public ModelAndView getTests(HttpServletRequest request,
+                                 HttpSession session) throws ParseException {
         session.removeAttribute("testN");
+        String login = String.valueOf(session.getAttribute("login"));
+        List<ResultEntity> results = resultDAO.getAllByLogin(login);
+        Set<TestsEntity> testss = new HashSet<>();
+        for (ResultEntity result : results) {
+            testss.add(result.getTest());
+        }
+        if (testss.size() != 0) {
+            request.setAttribute("testscount", testss.size());
+        } else {
+            request.setAttribute("testscount", 0);
+        }
+        Set<String> res = new HashSet<>();
+        for (ResultEntity re : results) {
+            res.add(re.getTest().getName());
+        }
+        Date dateFrom;
+        Date dateTo;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        List<TestsEntity> tests = testDAO.findAll();
+        List<TestsEntity> tes = new ArrayList<>();
+        for (TestsEntity test : tests) {
+            dateFrom = format.parse(test.getDateFrom());
+            dateTo = format.parse(test.getDateTo());
+            if (dateFrom.getTime() <= today.getTime()
+                    && today.getTime() <= dateTo.getTime())
+                tes.add(test);
+        }
         ModelAndView modelAndView = new ModelAndView();
-        request.setAttribute("tests", testDAO.findAll());
-        request.setAttribute("login", session.getAttribute("name"));
+        if (tes.size() != 0) {
+            request.setAttribute("tests", tes);
+        } else {
+            request.setAttribute("noTests", "Нет доступных для сдачи тестов");
+        }
+        request.setAttribute("login", login);
+        request.setAttribute("results", res);
         modelAndView.setViewName("start");
         return modelAndView;
     }
@@ -75,11 +111,10 @@ public class ResultController {
         String date = format.format(today);
         QuestionsEntity question;
         TestsEntity test;
-
         ResultEntity result;
-        for (int i = 1; i < 15; i++) {
+        for (int i = 1; i <= 15; i++) {
             if (request.getParameter("id" + i).equals("")) break;
-            question = questionDAO.getQuestionById(Integer.parseInt(request.getParameter("id"+i)));
+            question = questionDAO.getQuestionById(Integer.parseInt(request.getParameter("id" + i)));
             test = testDAO.getTestById(Integer.parseInt(request.getParameter("testN")));
             result = new ResultEntity();
             result.setQuestion(question);
@@ -92,4 +127,83 @@ public class ResultController {
         return "result";
     }
 
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/check", method = RequestMethod.GET)
+    public String check(Model model, HttpServletRequest request) {
+        List<ResultEntity> results = resultDAO.findAll();
+        Set<String> logins = new TreeSet<>();
+        for (ResultEntity result : results) {
+            logins.add(result.getLogin());
+        }
+        if (logins.size() != 0){
+            model.addAttribute("logins", logins);
+        } else {
+            request.setAttribute("message", "Ни один пользователь пока не сдавал тестов");
+        }
+        return "checktests";
+    }
+
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/checkwithtests", method = RequestMethod.GET)
+    public String testsByUser(Model model,
+                              HttpServletRequest request,
+                              HttpSession session) {
+        List<ResultEntity> results = resultDAO.findAll();
+        Set<TestsEntity> tests = new HashSet<>();
+        for (ResultEntity result : results) {
+            if (result.getLogin().equals(request.getParameter("user")))
+                tests.add(result.getTest());
+        }
+        session.setAttribute("user", request.getParameter("user"));
+        model.addAttribute("tests", tests);
+        return "checktests";
+    }
+
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/checktest", method = RequestMethod.GET)
+    public String tests(Model model,
+                        HttpServletRequest request,
+                        HttpSession session) {
+        List<ResultEntity> resultsByLoginAndTest
+                = resultDAO.getAllByLogin(String.valueOf(session.getAttribute("user")));
+        List<ResultEntity> results = new ArrayList<>();
+        for (ResultEntity result : resultsByLoginAndTest) {
+            if (result.getTest().equals(testDAO.getTestById(Integer.parseInt(request.getParameter("test")))))
+                results.add(result);
+        }
+        model.addAttribute("resultsByLoginAndTest", results);
+        model.addAttribute("testN", request.getParameter("test"));
+        return "checktests";
+    }
+
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/change", method = RequestMethod.GET)
+    public String change(Model model) {
+        List<TestsEntity> tests = testDAO.findAll();
+        model.addAttribute("tests", tests);
+        return "timeperiod";
+    }
+
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/showexisteperiod", method = RequestMethod.GET)
+    public String showexisteperiod(Model model,
+                         HttpServletRequest request) {
+        TestsEntity test = testDAO.getTestById(Integer.parseInt(request.getParameter("chosetest")));
+        model.addAttribute("test", test);
+        return "timeperiod";
+    }
+
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/changeperiod", method = RequestMethod.GET)
+    public String changeperiod(Model model,
+                               HttpServletRequest request) {
+        TestsEntity test = testDAO.getTestById(Integer.parseInt(request.getParameter("testId")));
+        testDAO.update(
+                test.getId(),
+                request.getParameter("period_from"),
+                request.getParameter("period_to"));
+        model.addAttribute("test", testDAO.getTestById(Integer.parseInt(request.getParameter("testId"))));
+        model.addAttribute("message", "Период действия теста изменен.");
+        return "timeperiod";
+    }
 }

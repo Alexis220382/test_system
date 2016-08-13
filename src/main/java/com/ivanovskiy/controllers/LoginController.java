@@ -1,9 +1,10 @@
 package com.ivanovskiy.controllers;
 
+import com.ivanovskiy.dao.result.ResultEntityDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -19,11 +20,13 @@ import java.util.Collection;
 @Controller
 public class LoginController {
 
+    @Autowired
+    private ResultEntityDAO resultDAO;
+
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcome(
             HttpServletResponse response, Principal principal,
             Authentication auth, HttpSession session) throws IOException {
-
         Collection<? extends GrantedAuthority> auths = auth.getAuthorities();
         session.setAttribute("auths", auths);
         String name = principal.getName();
@@ -33,7 +36,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(ModelMap model){
+    public String login(){
 
         return "login";
     }
@@ -46,7 +49,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(){
+     public String home(){
 
         return "index";
     }

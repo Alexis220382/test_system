@@ -17,9 +17,9 @@
         <property name="datePass">
             <column name="date_pass" sql-type="varchar" length="25"/>
         </property>
-        <many-to-one name="question" column="id_question" unique="true"
+        <many-to-one name="question" column="id_question" unique="true" lazy="false"
                      class="com.ivanovskiy.entity.QuestionsEntity" not-null="true"/>
-        <many-to-one name="test" column="id_test"
+        <many-to-one name="test" column="id_test" lazy="false"
                      class="com.ivanovskiy.entity.TestsEntity" not-null="true"/>
     </class>
 </hibernate-mapping>

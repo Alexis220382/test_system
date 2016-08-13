@@ -3,6 +3,7 @@ package com.ivanovskiy.dao.tests;
 import com.ivanovskiy.dao.ManageSessionFactory;
 import com.ivanovskiy.entity.TestsEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -17,17 +18,16 @@ import java.util.List;
 @Component
 public class TestsEntityDAOImpl implements TestsEntityDAO {
 
+    @Override
     public List<TestsEntity> findAll() {
         Session session = null;
         Transaction tx = null;
-        List<TestsEntity> testsEntities = null;
+        List<TestsEntity> tests = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
             tx = session.beginTransaction();
-
             Criteria criteria = session.createCriteria(TestsEntity.class);
-            testsEntities = criteria.list();
-
+            tests = criteria.list();
             tx.commit();
         } catch (Exception e) {
             if (tx!=null) tx.rollback();
@@ -38,7 +38,7 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
                 session.close();
             }
         }
-        return testsEntities;
+        return tests;
     }
 
     @Override
@@ -49,10 +49,8 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
         try {
             session = ManageSessionFactory.getFactory().openSession();
             tx = session.beginTransaction();
-
-            Criteria criteria = session.createCriteria(TestsEntity.class);
-            criteria.add(Restrictions.eq("id", id));
-            test = (TestsEntity) criteria.uniqueResult();
+            test = (TestsEntity) session.load(TestsEntity.class, id);
+            Hibernate.initialize(test);
             tx.commit();
         } catch (Exception e) {
             if (tx!=null) tx.rollback();
@@ -65,6 +63,7 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
         return test;
     }
 
+    @Override
     public TestsEntity save(TestsEntity testsEntity) {
         Session session = null;
         Transaction tx = null;
@@ -85,18 +84,20 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
         return testsEntity;
     }
 
-    public TestsEntity update(int id, String name) {
+    @Override
+    public TestsEntity update(int id, String dateFrom, String dateTo) {
         Session session = null;
         Transaction tx = null;
-        TestsEntity testsEntities = null;
+        TestsEntity test = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
             tx = session.beginTransaction();
-
-            testsEntities.setId(id);
-            testsEntities.setName(name);
-            session.update(testsEntities);
-
+            Criteria criteria = session.createCriteria(TestsEntity.class);
+            criteria.add(Restrictions.eq("id", id));
+            test = (TestsEntity) criteria.uniqueResult();
+            test.setDateFrom(dateFrom);
+            test.setDateTo(dateTo);
+            session.saveOrUpdate(test);
             tx.commit();
         } catch (Exception e) {
             if (tx!=null) tx.rollback();
@@ -106,9 +107,10 @@ public class TestsEntityDAOImpl implements TestsEntityDAO {
                 session.close();
             }
         }
-        return testsEntities;
+        return test;
     }
 
+    @Override
     public void delete(TestsEntity testsEntity) {
     }
 }

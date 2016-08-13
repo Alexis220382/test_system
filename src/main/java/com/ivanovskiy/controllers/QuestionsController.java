@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashSet;
@@ -32,8 +33,10 @@ public class QuestionsController {
 
     @PreAuthorize(value = "ROLE_ADMIN")
     @RequestMapping(value = "admin/question", method = RequestMethod.GET)
-    public String getQuestions(ModelMap model) {
+    public String getQuestions(ModelMap model,
+                               HttpSession session) {
         model.addAttribute("questions", questionsDAO.findAll());
+        session.removeAttribute("user");
         return "adminpanel";
     }
 
@@ -55,7 +58,6 @@ public class QuestionsController {
         question.setFirst(request.getParameter("first_variant"));
         question.setSecond(request.getParameter("second_variant"));
         question.setThird(request.getParameter("third_variant"));
-
         questionsDAO.save(question);
         request.setAttribute("message", "Вопрос успешно добавлен.");
         request.getRequestDispatcher("/admin/question").forward(request, response);
@@ -84,13 +86,11 @@ public class QuestionsController {
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("thirteen"))));
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("fourteen"))));
         questions.add(questionsDAO.getQuestionById(Integer.parseInt(request.getParameter("fifteen"))));
-
         test.setName(request.getParameter("test_name"));
         test.setDateFrom(request.getParameter("period_from"));
         test.setDateTo(request.getParameter("period_to"));
         test.setQuestions(questions);
         testDAO.save(test);
-
         request.getRequestDispatcher("/admin/question").forward(request, response);
         return;
     }

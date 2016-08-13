@@ -8,7 +8,10 @@ public interface ResultEntityDAO {
 
     List<ResultEntity> findAll();
 
+    List<ResultEntity> getAllByLogin(String user);
+
     ResultEntity save(ResultEntity result);
 
     void delete(ResultEntity result);
+
 }

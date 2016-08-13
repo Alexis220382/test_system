@@ -1,7 +1,7 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>New user</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
@@ -21,6 +21,6 @@
   <input type="submit" value="Регистрация" />
 </form>
 <br/><br/>
-<a href="login.jsp">Выход</a>
+<a href="/j_spring_security_logout">Выход</a>
 </body>
 </html>
