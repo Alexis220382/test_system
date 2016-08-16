@@ -1,14 +1,18 @@
-package com.ivanovskiy.entity;
+package com.ivanovskiy.dao;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
- * Created by Alexey-Ivanovskiy on 08.08.2016.
+ * Created by Alexey-Ivanovskiy on 16.08.2016.
  */
 @Entity
-@Table(name = "result", schema = "", catalog = "test_db")
-public class ResultEntity {
+public class Result {
     private int id;
+    private Integer idTest;
+    private Integer idQuestion;
     private String login;
     private Integer res;
     private Integer isRight;
@@ -22,6 +26,26 @@ public class ResultEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "id_test", nullable = true, insertable = true, updatable = true)
+    public Integer getIdTest() {
+        return idTest;
+    }
+
+    public void setIdTest(Integer idTest) {
+        this.idTest = idTest;
+    }
+
+    @Basic
+    @Column(name = "id_question", nullable = true, insertable = true, updatable = true)
+    public Integer getIdQuestion() {
+        return idQuestion;
+    }
+
+    public void setIdQuestion(Integer idQuestion) {
+        this.idQuestion = idQuestion;
     }
 
     @Basic
@@ -69,9 +93,11 @@ public class ResultEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ResultEntity result = (ResultEntity) o;
+        Result result = (Result) o;
 
         if (id != result.id) return false;
+        if (idTest != null ? !idTest.equals(result.idTest) : result.idTest != null) return false;
+        if (idQuestion != null ? !idQuestion.equals(result.idQuestion) : result.idQuestion != null) return false;
         if (login != null ? !login.equals(result.login) : result.login != null) return false;
         if (res != null ? !res.equals(result.res) : result.res != null) return false;
         if (isRight != null ? !isRight.equals(result.isRight) : result.isRight != null) return false;
@@ -83,30 +109,12 @@ public class ResultEntity {
     @Override
     public int hashCode() {
         int result = id;
+        result = 31 * result + (idTest != null ? idTest.hashCode() : 0);
+        result = 31 * result + (idQuestion != null ? idQuestion.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (res != null ? res.hashCode() : 0);
         result = 31 * result + (isRight != null ? isRight.hashCode() : 0);
         result = 31 * result + (datePass != null ? datePass.hashCode() : 0);
         return result;
-    }
-
-    private TestsEntity test;
-
-    public TestsEntity getTest() {
-        return test;
-    }
-
-    public void setTest(TestsEntity test) {
-        this.test = test;
-    }
-
-    private QuestionsEntity question;
-
-    public QuestionsEntity getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(QuestionsEntity question) {
-        this.question = question;
     }
 }

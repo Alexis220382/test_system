@@ -10,7 +10,8 @@
 
 <c:out value="${message}"/>
 <c:if test="${logins != null}">
-<h3>Выберите пользователя</h3><br/>
+    <h3>Выберите пользователя</h3><br/>
+
     <form action="/admin/checkwithtests" method="get">
         <select name="user">
             <c:forEach var="login" items="${logins}">
@@ -35,25 +36,38 @@
 </c:if>
 
 <c:if test="${resultsByLoginAndTest != null}">
-    <h3>Пользователь <em>${user}</em> выполнил тест № ${testN} со следующими результатами.</h3><br/>
-    <table border="1">
-        <thead>
-        <tr>
-            <td>№ вопроса</td>
-            <c:forEach var="i" begin="1" end="15" step="1">
-                <td>${i}</td>
-            </c:forEach>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Выбранный вариант</td>
-            <c:forEach var="result" items="${resultsByLoginAndTest}">
-                <td>${result.res}</td>
-            </c:forEach>
-        </tr>
-        </tbody>
-    </table>
+    <form action="/admin/saverevision" method="get">
+        <h3>Пользователь <em>${user}</em> выполнил тест № ${testN} со следующими результатами.</h3><br/>
+        <input type="hidden" name="testN" value="${testN}">
+        <table border="1">
+            <thead>
+            <tr>
+                <td>№ вопроса</td>
+                <c:forEach var="i" begin="1" end="15" step="1">
+                    <td>${i}</td>
+                </c:forEach>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Выбранный вариант</td>
+                <c:forEach var="result" items="${resultsByLoginAndTest}">
+                    <td>${result.res}</td>
+                </c:forEach>
+            </tr>
+            <tr>
+                <td>Отметить ответы</td>
+                <c:forEach var="i" begin="1" end="15" step="1">
+                    <td>
+                        <input type="radio" name="answer${i}" value="1" required>Верно<br/>
+                        <input type="radio" name="answer${i}" value="0" required>Не верно
+                    </td>
+                </c:forEach>
+            </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="Тест проверен">
+    </form>
 </c:if>
 <br/>
 <a href="/admin/question">Назад в админ панель</a>

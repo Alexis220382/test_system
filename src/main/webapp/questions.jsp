@@ -14,7 +14,7 @@
 
 <form action="/result">
     <b>Тест <input type="text" name="testN" value="${testN}">.</b><br /><br />
-    <label><b>Вопрос 2. ${qName1}</b></label><br />
+    <label><b>Вопрос 1. ${qName1}</b></label><br />
     <input type="hidden" name="id1" value="${questionId1}">
     <input type="radio" id="one" name="answer1" value="1" required>1. ${first_answer1}<br />
     <input type="radio" id="two" name="answer1" value="2" required>2. ${second_answer1}<br />

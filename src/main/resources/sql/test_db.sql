@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `result` (
   `id_question` INT(11)          DEFAULT NULL,
   `login`       VARCHAR(55)      DEFAULT NULL,
   `res`         INT(5)           DEFAULT NULL,
+  `is_right`    INT(5)           DEFAULT NULL,
   `date_pass`   VARCHAR(25)      DEFAULT NULL,
   PRIMARY KEY (`id`)
 )

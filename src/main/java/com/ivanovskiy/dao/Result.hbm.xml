@@ -4,10 +4,16 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.ivanovskiy.entity.ResultEntity" table="result" schema="" catalog="test_db">
+    <class name="com.ivanovskiy.dao.Result" table="result" schema="" catalog="test_db">
         <id name="id">
             <column name="id" sql-type="int" not-null="true"/>
         </id>
+        <property name="idTest">
+            <column name="id_test" sql-type="int"/>
+        </property>
+        <property name="idQuestion">
+            <column name="id_question" sql-type="int"/>
+        </property>
         <property name="login">
             <column name="login" sql-type="varchar" length="55"/>
         </property>
@@ -20,9 +26,5 @@
         <property name="datePass">
             <column name="date_pass" sql-type="varchar" length="25"/>
         </property>
-        <many-to-one name="question" column="id_question" unique="true" lazy="false"
-                     class="com.ivanovskiy.entity.QuestionsEntity" not-null="true"/>
-        <many-to-one name="test" column="id_test" lazy="false"
-                     class="com.ivanovskiy.entity.TestsEntity" not-null="true"/>
     </class>
 </hibernate-mapping>

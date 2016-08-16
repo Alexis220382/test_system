@@ -165,13 +165,10 @@ public class ResultController {
                         HttpServletRequest request,
                         HttpSession session) {
         List<ResultEntity> resultsByLoginAndTest
-                = resultDAO.getAllByLogin(String.valueOf(session.getAttribute("user")));
-        List<ResultEntity> results = new ArrayList<>();
-        for (ResultEntity result : resultsByLoginAndTest) {
-            if (result.getTest().equals(testDAO.getTestById(Integer.parseInt(request.getParameter("test")))))
-                results.add(result);
-        }
-        model.addAttribute("resultsByLoginAndTest", results);
+                = resultDAO.getAllByLoginAndTest(
+                String.valueOf(session.getAttribute("user")),
+                testDAO.getTestById(Integer.parseInt(request.getParameter("test"))));
+        model.addAttribute("resultsByLoginAndTest", resultsByLoginAndTest);
         model.addAttribute("testN", request.getParameter("test"));
         return "checktests";
     }
@@ -205,5 +202,24 @@ public class ResultController {
         model.addAttribute("test", testDAO.getTestById(Integer.parseInt(request.getParameter("testId"))));
         model.addAttribute("message", "Период действия теста изменен.");
         return "timeperiod";
+    }
+
+    @PreAuthorize(value = "ROLE_ADMIN")
+    @RequestMapping(value = "admin/saverevision", method = RequestMethod.GET)
+    public String saveRevision(HttpServletRequest request,
+                               HttpServletResponse response,
+                               HttpSession session) throws ServletException, IOException {
+        int i = 1;
+        List<ResultEntity> resultsByLoginAndTest
+                = resultDAO.getAllByLoginAndTest(
+                String.valueOf(session.getAttribute("user")),
+                testDAO.getTestById(Integer.parseInt(request.getParameter("testN"))));
+        for (ResultEntity result : resultsByLoginAndTest) {
+            result.setIsRight(Integer.valueOf(request.getParameter("answer"+i)));
+            resultDAO.update(result.getId());
+            i++;
+        }
+        request.getRequestDispatcher("/admin/question").forward(request, response);
+        return null;
     }
 }
