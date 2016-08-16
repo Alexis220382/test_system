@@ -14,8 +14,8 @@
         <property name="res">
             <column name="res" sql-type="int"/>
         </property>
-        <property name="isRight">
-            <column name="is_right" sql-type="int"/>
+        <property name="mark">
+            <column name="mark" sql-type="int"/>
         </property>
         <property name="datePass">
             <column name="date_pass" sql-type="varchar" length="25"/>

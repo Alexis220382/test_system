@@ -15,7 +15,7 @@ public interface ResultEntityDAO {
 
     ResultEntity save(ResultEntity result);
 
-    ResultEntity update(int id);
+    ResultEntity update(int id, int mark);
 
     void delete(ResultEntity result);
 

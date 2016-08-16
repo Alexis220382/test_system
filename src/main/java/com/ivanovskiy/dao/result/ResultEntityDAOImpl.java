@@ -4,7 +4,6 @@ import com.ivanovskiy.dao.ManageSessionFactory;
 import com.ivanovskiy.entity.ResultEntity;
 import com.ivanovskiy.entity.TestsEntity;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -109,18 +108,16 @@ public class ResultEntityDAOImpl implements ResultEntityDAO {
     }
 
     @Override
-    public ResultEntity update(int id) {
+    public ResultEntity update(int id, int mark) {
         Session session = null;
         Transaction tx = null;
         ResultEntity result = null;
         try {
             session = ManageSessionFactory.getFactory().openSession();
             tx = session.beginTransaction();
-            Criteria criteria = session.createCriteria(ResultEntity.class);
-            criteria.add(Restrictions.eq("id", id));
-            result = (ResultEntity) criteria.uniqueResult();
+            result = (ResultEntity) session.get(ResultEntity.class, id);
+            result.setMark(mark);
             session.update(result);
-            Hibernate.initialize(result);
             tx.commit();
         } catch (Exception e) {
             if (tx!=null) tx.rollback();

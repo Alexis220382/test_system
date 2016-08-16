@@ -10,7 +10,8 @@
 <p style="color: red">${error}</p>
 
 <h3>Вы вошли под именем: ${login}</h3>
-<h3>Ваш баланс: ${testscount}</h3>
+<h3>Количество сданных тестов: ${testscount}</h3>
+<h3>Ваш баланс: ${points}</h3>
 
 <c:set var="admin" value="${'ROLE_ADMIN'}"/>
 <c:forEach var="auth" items="${auths}">

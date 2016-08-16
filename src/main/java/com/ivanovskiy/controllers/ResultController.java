@@ -44,11 +44,11 @@ public class ResultController {
         for (ResultEntity result : results) {
             testss.add(result.getTest());
         }
-        if (testss.size() != 0) {
-            request.setAttribute("testscount", testss.size());
-        } else {
-            request.setAttribute("testscount", 0);
-        }
+//        if (testss.size() != 0) {
+//            request.setAttribute("testscount", testss.size());
+//        } else {
+//            request.setAttribute("testscount", 0);
+//        }
         Set<String> res = new HashSet<>();
         for (ResultEntity re : results) {
             res.add(re.getTest().getName());
@@ -72,6 +72,13 @@ public class ResultController {
         } else {
             request.setAttribute("noTests", "Нет доступных для сдачи тестов");
         }
+        List<ResultEntity> resultsByLogin = resultDAO.getAllByLogin(String.valueOf(session.getAttribute("login")));
+        int i = 0;
+        for (ResultEntity result : resultsByLogin) {
+            if (result.getMark() == 1) i++;
+        }
+        request.setAttribute("testscount", testss.size());
+        request.setAttribute("points", i);
         request.setAttribute("login", login);
         request.setAttribute("results", res);
         modelAndView.setViewName("start");
@@ -120,6 +127,7 @@ public class ResultController {
             result.setQuestion(question);
             result.setLogin(String.valueOf(session.getAttribute("login")));
             result.setRes(Integer.parseInt(request.getParameter("answer" + i)));
+            result.setMark(0);
             result.setTest(test);
             result.setDatePass(date);
             resultDAO.save(result);
@@ -215,8 +223,9 @@ public class ResultController {
                 String.valueOf(session.getAttribute("user")),
                 testDAO.getTestById(Integer.parseInt(request.getParameter("testN"))));
         for (ResultEntity result : resultsByLoginAndTest) {
-            result.setIsRight(Integer.valueOf(request.getParameter("answer"+i)));
-            resultDAO.update(result.getId());
+            resultDAO.update(
+                    result.getId(),
+                    Integer.valueOf(request.getParameter("answer"+i)));
             i++;
         }
         request.getRequestDispatcher("/admin/question").forward(request, response);

@@ -1,7 +1,5 @@
 package com.ivanovskiy.controllers;
 
-import com.ivanovskiy.dao.result.ResultEntityDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -19,9 +17,6 @@ import java.util.Collection;
  */
 @Controller
 public class LoginController {
-
-    @Autowired
-    private ResultEntityDAO resultDAO;
 
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcome(
