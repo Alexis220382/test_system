@@ -21,6 +21,9 @@
         <property name="third">
             <column name="third" sql-type="varchar" length="1000"/>
         </property>
+        <property name="right_answer">
+            <column name="right_answer" sql-type="varchar" length="1000"/>
+        </property>
         <set name="tests" table="testquestions" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_questions" not-null="true" />

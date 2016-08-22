@@ -88,6 +88,29 @@ public class ResultEntityDAOImpl implements ResultEntityDAO {
     }
 
     @Override
+    public List<ResultEntity> getAllByTest(TestsEntity test) {
+        Session session = null;
+        Transaction tx = null;
+        List<ResultEntity> results = null;
+        try {
+            session = ManageSessionFactory.getFactory().openSession();
+            tx = session.beginTransaction();
+            Criteria criteria = session.createCriteria(ResultEntity.class)
+                    .add(Restrictions.eq("test", test));
+            results = criteria.list();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return results;
+    }
+
+    @Override
     public ResultEntity save(ResultEntity result) {
         Session session = null;
         Transaction tx = null;

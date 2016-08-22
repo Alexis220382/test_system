@@ -39,16 +39,16 @@ public class ResultController {
                                  HttpSession session) throws ParseException {
         session.removeAttribute("testN");
         String login = String.valueOf(session.getAttribute("login"));
-        List<ResultEntity> results = resultDAO.getAllByLogin(login);
+        List<ResultEntity> resultsAll = resultDAO.findAll();
         Set<TestsEntity> testss = new HashSet<>();
+        Set<ResultEntity> results = new HashSet<>();
+        for (ResultEntity result : resultsAll) {
+            if (result.getLogin().equals(login))
+                results.add(result);
+        }
         for (ResultEntity result : results) {
             testss.add(result.getTest());
         }
-//        if (testss.size() != 0) {
-//            request.setAttribute("testscount", testss.size());
-//        } else {
-//            request.setAttribute("testscount", 0);
-//        }
         Set<String> res = new HashSet<>();
         for (ResultEntity re : results) {
             res.add(re.getTest().getName());
@@ -68,16 +68,24 @@ public class ResultController {
         }
         ModelAndView modelAndView = new ModelAndView();
         if (tes.size() != 0) {
+            for (TestsEntity test : testss) {
+                tes.remove(test);
+            }
             request.setAttribute("tests", tes);
         } else {
             request.setAttribute("noTests", "Нет доступных для сдачи тестов");
         }
-        List<ResultEntity> resultsByLogin = resultDAO.getAllByLogin(String.valueOf(session.getAttribute("login")));
-        int i = 0;
-        for (ResultEntity result : resultsByLogin) {
+        for (ResultEntity result : resultsAll) {
+                if (result.getRes().equals(Integer.parseInt(result.getQuestion().getRight_answer())))
+                    resultDAO.update(result.getId(), 1);
+        }
+        int i = 100;
+        int test_count = testss.size();
+        for (ResultEntity result : results) {
             if (result.getMark() == 1) i++;
         }
-        request.setAttribute("testscount", testss.size());
+        i = i - test_count*15;
+        request.setAttribute("testscount", test_count);
         request.setAttribute("points", i);
         request.setAttribute("login", login);
         request.setAttribute("results", res);
@@ -136,34 +144,21 @@ public class ResultController {
     }
 
     @PreAuthorize(value = "ROLE_ADMIN")
-    @RequestMapping(value = "admin/check", method = RequestMethod.GET)
-    public String check(Model model, HttpServletRequest request) {
-        List<ResultEntity> results = resultDAO.findAll();
-        Set<String> logins = new TreeSet<>();
-        for (ResultEntity result : results) {
-            logins.add(result.getLogin());
-        }
-        if (logins.size() != 0){
-            model.addAttribute("logins", logins);
-        } else {
-            request.setAttribute("message", "Ни один пользователь пока не сдавал тестов");
-        }
-        return "checktests";
-    }
-
-    @PreAuthorize(value = "ROLE_ADMIN")
     @RequestMapping(value = "admin/checkwithtests", method = RequestMethod.GET)
-    public String testsByUser(Model model,
-                              HttpServletRequest request,
-                              HttpSession session) {
-        List<ResultEntity> results = resultDAO.findAll();
-        Set<TestsEntity> tests = new HashSet<>();
-        for (ResultEntity result : results) {
-            if (result.getLogin().equals(request.getParameter("user")))
-                tests.add(result.getTest());
+    public String testsByUser(Model model) {
+        List<TestsEntity> tests = testDAO.findAll();
+        Set<TestsEntity> set = new HashSet<>();
+        for (TestsEntity test : tests) {
+            for (QuestionsEntity question : test.getQuestions()) {
+                if (question.getRight_answer().equals(""))
+                    set.add(test);
+            }
         }
-        session.setAttribute("user", request.getParameter("user"));
-        model.addAttribute("tests", tests);
+        if (set.size() == 0) {
+            model.addAttribute("message", "Непроверенные тесты отсутствуют.");
+        } else {
+            model.addAttribute("tests", set);
+        }
         return "checktests";
     }
 
@@ -176,7 +171,9 @@ public class ResultController {
                 = resultDAO.getAllByLoginAndTest(
                 String.valueOf(session.getAttribute("user")),
                 testDAO.getTestById(Integer.parseInt(request.getParameter("test"))));
+        TestsEntity test = testDAO.getTestById(Integer.parseInt(request.getParameter("test")));
         model.addAttribute("resultsByLoginAndTest", resultsByLoginAndTest);
+        model.addAttribute("questions", test.getQuestions());
         model.addAttribute("testN", request.getParameter("test"));
         return "checktests";
     }
@@ -192,7 +189,7 @@ public class ResultController {
     @PreAuthorize(value = "ROLE_ADMIN")
     @RequestMapping(value = "admin/showexisteperiod", method = RequestMethod.GET)
     public String showexisteperiod(Model model,
-                         HttpServletRequest request) {
+                                   HttpServletRequest request) {
         TestsEntity test = testDAO.getTestById(Integer.parseInt(request.getParameter("chosetest")));
         model.addAttribute("test", test);
         return "timeperiod";
@@ -215,17 +212,13 @@ public class ResultController {
     @PreAuthorize(value = "ROLE_ADMIN")
     @RequestMapping(value = "admin/saverevision", method = RequestMethod.GET)
     public String saveRevision(HttpServletRequest request,
-                               HttpServletResponse response,
-                               HttpSession session) throws ServletException, IOException {
+                               HttpServletResponse response) throws ServletException, IOException {
+        TestsEntity test = testDAO.getTestById(Integer.parseInt(request.getParameter("testN")));
+        Set<QuestionsEntity> questions = test.getQuestions();
         int i = 1;
-        List<ResultEntity> resultsByLoginAndTest
-                = resultDAO.getAllByLoginAndTest(
-                String.valueOf(session.getAttribute("user")),
-                testDAO.getTestById(Integer.parseInt(request.getParameter("testN"))));
-        for (ResultEntity result : resultsByLoginAndTest) {
-            resultDAO.update(
-                    result.getId(),
-                    Integer.valueOf(request.getParameter("answer"+i)));
+        for (QuestionsEntity question : questions) {
+            question.setRight_answer(request.getParameter("answer" + i));
+            questionDAO.update(question);
             i++;
         }
         request.getRequestDispatcher("/admin/question").forward(request, response);

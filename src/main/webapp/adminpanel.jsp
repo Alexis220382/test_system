@@ -129,7 +129,7 @@
 <br/><br/>
 <a href="/gettests">Вернуться к тестам</a>
 <br/><br/>
-<a href="/admin/check">Перейти к проверке тестов</a>
+<a href="/admin/checkwithtests">Перейти к проверке тестов</a>
 <br/><br/>
 <a href="/admin/change">Изменить сроки доступности тестов</a>
 </body>

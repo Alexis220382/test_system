@@ -11,6 +11,8 @@ public interface ResultEntityDAO {
 
     List<ResultEntity> getAllByLogin(String user);
 
+    List<ResultEntity> getAllByTest(TestsEntity test);
+
     List<ResultEntity> getAllByLoginAndTest(String user, TestsEntity test);
 
     ResultEntity save(ResultEntity result);

@@ -17,6 +17,7 @@ public class QuestionsEntity implements Serializable {
     private String first;
     private String second;
     private String third;
+    private String right_answer;
 
     public QuestionsEntity() {
     }
@@ -78,6 +79,16 @@ public class QuestionsEntity implements Serializable {
         this.third = third;
     }
 
+    @Basic
+    @Column(name = "right_answer", nullable = true, insertable = true, updatable = true, length = 1000)
+    public String getRight_answer() {
+        return right_answer;
+    }
+
+    public void setRight_answer(String right_answer) {
+        this.right_answer = right_answer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,6 +101,7 @@ public class QuestionsEntity implements Serializable {
         if (first != null ? !first.equals(that.first) : that.first != null) return false;
         if (second != null ? !second.equals(that.second) : that.second != null) return false;
         if (third != null ? !third.equals(that.third) : that.third != null) return false;
+        if (right_answer != null ? !right_answer.equals(that.right_answer) : that.right_answer != null) return false;
 
         return true;
     }
@@ -101,6 +113,7 @@ public class QuestionsEntity implements Serializable {
         result = 31 * result + (first != null ? first.hashCode() : 0);
         result = 31 * result + (second != null ? second.hashCode() : 0);
         result = 31 * result + (third != null ? third.hashCode() : 0);
+        result = 31 * result + (right_answer != null ? right_answer.hashCode() : 0);
         return result;
     }
 

@@ -14,11 +14,12 @@ CREATE TABLE IF NOT EXISTS `tests` (
 DROP TABLE IF EXISTS `questions`;
 
 CREATE TABLE IF NOT EXISTS `questions` (
-  `id`     INT(11) NOT NULL AUTO_INCREMENT,
-  `name`   VARCHAR(1000)    DEFAULT NULL,
-  `first`  VARCHAR(1000)    DEFAULT NULL,
-  `second` VARCHAR(1000)    DEFAULT NULL,
-  `third`  VARCHAR(1000)    DEFAULT NULL,
+  `id`           INT(11) NOT NULL AUTO_INCREMENT,
+  `name`         VARCHAR(1000)    DEFAULT NULL,
+  `first`        VARCHAR(1000)    DEFAULT NULL,
+  `second`       VARCHAR(1000)    DEFAULT NULL,
+  `third`        VARCHAR(1000)    DEFAULT NULL,
+  `right_answer` VARCHAR(1000)    DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
