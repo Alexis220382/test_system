@@ -28,9 +28,9 @@
         <table border="1">
             <thead>
             <tr>
-                <td>№ вопроса</td>
-                <c:forEach var="i" begin="1" end="15" step="1">
-                    <td>${i}</td>
+                <td>Наименование вопроса</td>
+                <c:forEach var="question" items="${questions}">
+                    <td>${question.name}</td>
                 </c:forEach>
             </tr>
             </thead>

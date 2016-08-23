@@ -76,15 +76,15 @@ public class ResultController {
             request.setAttribute("noTests", "Нет доступных для сдачи тестов");
         }
         for (ResultEntity result : resultsAll) {
-                if (result.getRes().equals(Integer.parseInt(result.getQuestion().getRight_answer())))
-                    resultDAO.update(result.getId(), 1);
+            if (result.getRes().equals(result.getQuestion().getRight_answer()))
+                resultDAO.update(result.getId(), 1);
         }
         int i = 100;
         int test_count = testss.size();
         for (ResultEntity result : results) {
             if (result.getMark() == 1) i++;
         }
-        i = i - test_count*15;
+        i = i - test_count * 15;
         request.setAttribute("testscount", test_count);
         request.setAttribute("points", i);
         request.setAttribute("login", login);
@@ -150,7 +150,7 @@ public class ResultController {
         Set<TestsEntity> set = new HashSet<>();
         for (TestsEntity test : tests) {
             for (QuestionsEntity question : test.getQuestions()) {
-                if (question.getRight_answer().equals(""))
+                if (question.getRight_answer() == 0)
                     set.add(test);
             }
         }
@@ -164,16 +164,15 @@ public class ResultController {
 
     @PreAuthorize(value = "ROLE_ADMIN")
     @RequestMapping(value = "admin/checktest", method = RequestMethod.GET)
-    public String tests(Model model,
-                        HttpServletRequest request,
-                        HttpSession session) {
-        List<ResultEntity> resultsByLoginAndTest
-                = resultDAO.getAllByLoginAndTest(
-                String.valueOf(session.getAttribute("user")),
-                testDAO.getTestById(Integer.parseInt(request.getParameter("test"))));
-        TestsEntity test = testDAO.getTestById(Integer.parseInt(request.getParameter("test")));
-        model.addAttribute("resultsByLoginAndTest", resultsByLoginAndTest);
-        model.addAttribute("questions", test.getQuestions());
+    public String tests(Model model, HttpServletRequest request) {
+        List<QuestionsEntity> questions = questionDAO.findAll();
+        Set<QuestionsEntity> set = new HashSet<>();
+        for (QuestionsEntity question : questions) {
+            if (question.getRight_answer() == 0)
+                set.add(question);
+        }
+
+        model.addAttribute("questions", set);
         model.addAttribute("testN", request.getParameter("test"));
         return "checktests";
     }
@@ -213,11 +212,15 @@ public class ResultController {
     @RequestMapping(value = "admin/saverevision", method = RequestMethod.GET)
     public String saveRevision(HttpServletRequest request,
                                HttpServletResponse response) throws ServletException, IOException {
-        TestsEntity test = testDAO.getTestById(Integer.parseInt(request.getParameter("testN")));
-        Set<QuestionsEntity> questions = test.getQuestions();
-        int i = 1;
+        List<QuestionsEntity> questions = questionDAO.findAll();
+        Set<QuestionsEntity> set = new HashSet<>();
         for (QuestionsEntity question : questions) {
-            question.setRight_answer(request.getParameter("answer" + i));
+            if (question.getRight_answer() == 0)
+                set.add(question);
+        }
+        int i = 1;
+        for (QuestionsEntity question : set) {
+            question.setRight_answer(Integer.parseInt(request.getParameter("answer" + i)));
             questionDAO.update(question);
             i++;
         }
